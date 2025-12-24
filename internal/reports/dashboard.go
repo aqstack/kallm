@@ -236,25 +236,6 @@ func DashboardHTML() string {
         </div>
 
         <div class="charts-grid">
-            <div class="chart-card">
-                <h3>Hit Rate Over Time (%)</h3>
-                <div class="chart-container"><canvas id="hitRateChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <h3>Latency Over Time (ms)</h3>
-                <div class="chart-container"><canvas id="latencyChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <h3>Latency Distribution</h3>
-                <div class="chart-container"><canvas id="latencyDistChart"></canvas></div>
-            </div>
-            <div class="chart-card">
-                <h3>Similarity Distribution (Cache Hits)</h3>
-                <div class="chart-container"><canvas id="similarityDistChart"></canvas></div>
-            </div>
-        </div>
-
-        <div class="charts-grid">
             <div class="chart-card test-panel">
                 <h3>Test Prompt</h3>
                 <div class="test-form">
@@ -287,6 +268,25 @@ func DashboardHTML() string {
                     <div id="trafficStatus" class="test-result"></div>
                     <div class="progress-bar"><div id="trafficProgress"></div></div>
                 </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Hit Rate Over Time (%)</h3>
+                <div class="chart-container"><canvas id="hitRateChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Latency Over Time (ms)</h3>
+                <div class="chart-container"><canvas id="latencyChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Latency Distribution</h3>
+                <div class="chart-container"><canvas id="latencyDistChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <h3>Similarity Distribution (Cache Hits)</h3>
+                <div class="chart-container"><canvas id="similarityDistChart"></canvas></div>
             </div>
         </div>
 
