@@ -13,111 +13,117 @@ func DashboardHTML() string {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
+            background: #f1f5f9;
+            color: #334155;
             min-height: 100vh;
         }
         .header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid #334155;
+            background: white;
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .header h1 {
             font-size: 1.5rem;
             font-weight: 600;
-            color: #f8fafc;
+            color: #1e293b;
         }
-        .header p { color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem; }
-        .container { padding: 1.5rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .header p { color: #64748b; font-size: 0.875rem; margin-top: 0.25rem; }
+        .container { padding: 2rem 2.5rem; max-width: 1400px; margin: 0 auto; }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
         }
         .stat-card {
-            background: #1e293b;
+            background: white;
             border-radius: 0.75rem;
-            padding: 1.25rem;
-            border: 1px solid #334155;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .stat-label { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .stat-value { font-size: 1.75rem; font-weight: 700; color: #f8fafc; margin-top: 0.25rem; }
-        .stat-value.green { color: #4ade80; }
-        .stat-value.blue { color: #60a5fa; }
-        .stat-value.purple { color: #a78bfa; }
-        .stat-value.yellow { color: #facc15; }
+        .stat-label { color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+        .stat-value { font-size: 1.75rem; font-weight: 700; color: #1e293b; margin-top: 0.5rem; }
+        .stat-value.green { color: #16a34a; }
+        .stat-value.blue { color: #2563eb; }
+        .stat-value.purple { color: #7c3aed; }
+        .stat-value.yellow { color: #ca8a04; }
 
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
         }
         @media (max-width: 1024px) { .charts-grid { grid-template-columns: 1fr; } }
 
         .chart-card {
-            background: #1e293b;
+            background: white;
             border-radius: 0.75rem;
-            padding: 1.25rem;
-            border: 1px solid #334155;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .chart-card h3 { font-size: 0.875rem; color: #f8fafc; margin-bottom: 1rem; }
+        .chart-card h3 { font-size: 0.875rem; color: #1e293b; margin-bottom: 1rem; font-weight: 600; }
         .chart-container { position: relative; height: 200px; }
 
         .table-card {
-            background: #1e293b;
+            background: white;
             border-radius: 0.75rem;
-            padding: 1.25rem;
-            border: 1px solid #334155;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
         }
-        .table-card h3 { font-size: 0.875rem; color: #f8fafc; margin-bottom: 1rem; }
+        .table-card h3 { font-size: 0.875rem; color: #1e293b; margin-bottom: 1rem; font-weight: 600; }
         table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-        th { text-align: left; color: #94a3b8; font-weight: 500; padding: 0.5rem; border-bottom: 1px solid #334155; }
-        td { padding: 0.5rem; border-bottom: 1px solid #1e293b; }
+        th { text-align: left; color: #64748b; font-weight: 500; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; }
+        td { padding: 0.75rem; border-bottom: 1px solid #f1f5f9; color: #475569; }
+        tr:hover { background: #f8fafc; }
         .badge {
             display: inline-block;
-            padding: 0.125rem 0.5rem;
+            padding: 0.25rem 0.625rem;
             border-radius: 9999px;
             font-size: 0.7rem;
-            font-weight: 500;
+            font-weight: 600;
         }
-        .badge.hit { background: #166534; color: #4ade80; }
-        .badge.miss { background: #7f1d1d; color: #fca5a5; }
+        .badge.hit { background: #dcfce7; color: #166534; }
+        .badge.miss { background: #fee2e2; color: #991b1b; }
 
         .refresh-info {
             text-align: center;
-            color: #64748b;
+            color: #94a3b8;
             font-size: 0.75rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .test-panel { min-height: 200px; }
-        .test-form { display: flex; flex-direction: column; gap: 0.75rem; }
+        .test-form { display: flex; flex-direction: column; gap: 1rem; }
         .test-form textarea {
-            background: #0f172a;
-            border: 1px solid #334155;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 0.5rem;
-            color: #e2e8f0;
-            padding: 0.75rem;
+            color: #334155;
+            padding: 1rem;
             font-size: 0.875rem;
             resize: vertical;
-            min-height: 60px;
+            min-height: 70px;
             font-family: inherit;
         }
-        .test-form textarea:focus { outline: none; border-color: #60a5fa; }
-        .test-controls { display: flex; gap: 0.5rem; }
+        .test-form textarea:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .test-controls { display: flex; gap: 0.75rem; }
         .test-controls select, .test-controls button {
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
             font-size: 0.875rem;
             cursor: pointer;
         }
         .test-controls select {
-            background: #0f172a;
-            border: 1px solid #334155;
-            color: #e2e8f0;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: #334155;
             flex: 1;
         }
         .test-controls button, .traffic-presets button {
@@ -125,76 +131,92 @@ func DashboardHTML() string {
             border: none;
             color: white;
             font-weight: 500;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
-        .test-controls button:hover, .traffic-presets button:hover { background: #2563eb; }
+        .test-controls button:hover, .traffic-presets button:hover { background: #2563eb; transform: translateY(-1px); }
         .test-controls button:disabled, .traffic-presets button:disabled {
-            background: #475569;
+            background: #cbd5e1;
             cursor: not-allowed;
+            transform: none;
         }
         .test-result {
-            background: #0f172a;
-            border-radius: 0.375rem;
-            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            padding: 1rem;
             font-size: 0.8rem;
-            font-family: monospace;
+            font-family: 'SF Mono', Monaco, monospace;
             max-height: 120px;
             overflow-y: auto;
             white-space: pre-wrap;
             word-break: break-word;
+            color: #475569;
         }
-        .test-result.hit { border-left: 3px solid #4ade80; }
-        .test-result.miss { border-left: 3px solid #f87171; }
-        .test-result.error { border-left: 3px solid #facc15; color: #facc15; }
+        .test-result.hit { border-left: 3px solid #22c55e; background: #f0fdf4; }
+        .test-result.miss { border-left: 3px solid #ef4444; background: #fef2f2; }
+        .test-result.error { border-left: 3px solid #f59e0b; background: #fffbeb; color: #92400e; }
 
-        .traffic-options { display: flex; gap: 1rem; }
+        .traffic-options { display: flex; gap: 1.5rem; }
         .traffic-options label {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-size: 0.8rem;
-            color: #94a3b8;
+            color: #64748b;
         }
         .traffic-options input {
             width: 70px;
-            padding: 0.375rem;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 0.25rem;
-            color: #e2e8f0;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            color: #334155;
             font-size: 0.8rem;
         }
         .traffic-presets { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .traffic-presets button { padding: 0.375rem 0.75rem; font-size: 0.75rem; }
+        .traffic-presets button { padding: 0.5rem 1rem; font-size: 0.75rem; border-radius: 0.375rem; }
         .progress-bar {
-            height: 4px;
-            background: #334155;
-            border-radius: 2px;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
             overflow: hidden;
         }
         .progress-bar > div {
             height: 100%;
-            background: #4ade80;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
             width: 0%;
             transition: width 0.3s;
         }
 
-        .logs-panel { margin-bottom: 1rem; }
+        .logs-panel { margin-bottom: 0; }
         .logs-container {
-            background: #0f172a;
-            border-radius: 0.375rem;
-            padding: 0.75rem;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.7rem;
+            background: #1e293b;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'SF Mono', Monaco, Menlo, monospace;
+            font-size: 0.75rem;
             height: 200px;
             overflow-y: auto;
-            line-height: 1.4;
+            line-height: 1.5;
+            color: #e2e8f0;
         }
-        .log-line { margin: 2px 0; }
+        .log-line { margin: 3px 0; }
         .log-line.hit { color: #4ade80; }
         .log-line.miss { color: #f87171; }
         .log-line.info { color: #94a3b8; }
-        .log-line.error { color: #facc15; }
+        .log-line.error { color: #fbbf24; }
+
+        .clear-btn {
+            float: right;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .clear-btn:hover { background: #e2e8f0; }
     </style>
 </head>
 <body>
@@ -272,7 +294,7 @@ func DashboardHTML() string {
         </div>
 
         <div class="table-card logs-panel">
-            <h3>Live Logs <button onclick="clearLogs()" style="float:right;padding:2px 8px;font-size:0.7rem;background:#475569;border:none;color:#e2e8f0;border-radius:4px;cursor:pointer">Clear</button></h3>
+            <h3>Live Logs <button onclick="clearLogs()" class="clear-btn">Clear</button></h3>
             <div id="logsContainer" class="logs-container"></div>
         </div>
 
@@ -320,33 +342,33 @@ func DashboardHTML() string {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                x: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', maxTicksLimit: 6 } },
-                y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }
+                x: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b', maxTicksLimit: 6 } },
+                y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } }
             }
         };
 
         const hitRateChart = new Chart(document.getElementById('hitRateChart'), {
             type: 'line',
-            data: { labels: [], datasets: [{ data: [], borderColor: '#4ade80', backgroundColor: 'rgba(74, 222, 128, 0.1)', fill: true, tension: 0.3 }] },
+            data: { labels: [], datasets: [{ data: [], borderColor: '#22c55e', backgroundColor: 'rgba(34, 197, 94, 0.1)', fill: true, tension: 0.3, borderWidth: 2 }] },
             options: { ...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, min: 0, max: 100 } } }
         });
 
         const latencyChart = new Chart(document.getElementById('latencyChart'), {
             type: 'line',
-            data: { labels: [], datasets: [{ data: [], borderColor: '#a78bfa', backgroundColor: 'rgba(167, 139, 250, 0.1)', fill: true, tension: 0.3 }] },
+            data: { labels: [], datasets: [{ data: [], borderColor: '#7c3aed', backgroundColor: 'rgba(124, 58, 237, 0.1)', fill: true, tension: 0.3, borderWidth: 2 }] },
             options: chartOptions
         });
 
         const latencyDistChart = new Chart(document.getElementById('latencyDistChart'), {
             type: 'bar',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: ['#4ade80', '#60a5fa', '#a78bfa', '#facc15', '#f87171'] }] },
+            data: { labels: [], datasets: [{ data: [], backgroundColor: ['#22c55e', '#3b82f6', '#7c3aed', '#eab308', '#ef4444'], borderRadius: 4 }] },
             options: { ...chartOptions, scales: { ...chartOptions.scales, y: { ...chartOptions.scales.y, beginAtZero: true } } }
         });
 
         const similarityDistChart = new Chart(document.getElementById('similarityDistChart'), {
             type: 'doughnut',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: ['#4ade80', '#60a5fa', '#a78bfa', '#facc15', '#f87171'] }] },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3b8' } } } }
+            data: { labels: [], datasets: [{ data: [], backgroundColor: ['#22c55e', '#3b82f6', '#7c3aed', '#eab308', '#ef4444'] }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#64748b' } } } }
         });
 
         function formatTime(ts) {
