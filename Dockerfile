@@ -20,7 +20,7 @@ ARG DATE=unknown
 
 RUN CGO_ENABLED=0 GOOS=linux go build \
     -ldflags="-s -w -X main.version=${VERSION} -X main.commit=${COMMIT} -X main.date=${DATE}" \
-    -o /kallm ./cmd/kallm
+    -o /mimir ./cmd/mimir
 
 # Runtime stage
 FROM alpine:3.19
@@ -28,14 +28,14 @@ FROM alpine:3.19
 RUN apk add --no-cache ca-certificates tzdata
 
 # Create non-root user
-RUN adduser -D -g '' kallm
-USER kallm
+RUN adduser -D -g '' mimir
+USER mimir
 
 WORKDIR /app
 
 # Copy binary from builder
-COPY --from=builder /kallm /app/kallm
+COPY --from=builder /mimir /app/mimir
 
 EXPOSE 8080
 
-ENTRYPOINT ["/app/kallm"]
+ENTRYPOINT ["/app/mimir"]

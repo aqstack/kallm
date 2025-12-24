@@ -1,8 +1,8 @@
-# kallm
+# mimir
 
 **LLM Semantic Cache**
 
-kallm is a drop-in proxy that caches LLM API responses using semantic similarity, reducing costs and latency for repeated or similar queries.
+mimir is a drop-in proxy that caches LLM API responses using semantic similarity, reducing costs and latency for repeated or similar queries.
 
 ## Features
 
@@ -18,7 +18,7 @@ kallm is a drop-in proxy that caches LLM API responses using semantic similarity
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   Client    │────▶│    kallm    │────▶│  LLM API    │
+│   Client    │────▶│    mimir    │────▶│  LLM API    │
 │  (app/pod)  │◀────│   (proxy)   │◀────│ (OpenAI/..) │
 └─────────────┘     └──────┬──────┘     └─────────────┘
                            │
@@ -46,44 +46,44 @@ brew install ollama  # macOS
 ollama serve &
 ollama pull nomic-embed-text
 
-# Clone and run kallm
-git clone https://github.com/aqstack/kallm.git
-cd kallm
+# Clone and run mimir
+git clone https://github.com/aqstack/mimir.git
+cd mimir
 make build
-./bin/kallm
+./bin/mimir
 ```
 
 ### Option 2: OpenAI Embeddings
 
 ```bash
 # Clone and build
-git clone https://github.com/aqstack/kallm.git
-cd kallm
+git clone https://github.com/aqstack/mimir.git
+cd mimir
 make build
 
 # Run with OpenAI
 export OPENAI_API_KEY=sk-...
-./bin/kallm
+./bin/mimir
 ```
 
 ### Using Docker
 
 ```bash
 # With Ollama (requires Ollama running on host)
-docker run -p 8080:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434 ghcr.io/aqstack/kallm:latest
+docker run -p 8080:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434 ghcr.io/aqstack/mimir:latest
 
 # With OpenAI
-docker run -p 8080:8080 -e OPENAI_API_KEY=$OPENAI_API_KEY ghcr.io/aqstack/kallm:latest
+docker run -p 8080:8080 -e OPENAI_API_KEY=$OPENAI_API_KEY ghcr.io/aqstack/mimir:latest
 ```
 
 ## Usage
 
-Point your OpenAI client to kallm instead of the OpenAI API:
+Point your OpenAI client to mimir instead of the OpenAI API:
 
 ```python
 from openai import OpenAI
 
-# Point to kallm proxy
+# Point to mimir proxy
 client = OpenAI(
     base_url="http://localhost:8080/v1",
     api_key="your-api-key"  # or use OPENAI_API_KEY env var
@@ -95,25 +95,25 @@ response = client.chat.completions.create(
 )
 
 # Check cache status in response headers
-# X-Kallm-Cache: HIT or MISS
-# X-Kallm-Similarity: 0.9823 (if HIT)
+# X-Mimir-Cache: HIT or MISS
+# X-Mimir-Similarity: 0.9823 (if HIT)
 ```
 
 ## Configuration
 
 | Environment Variable | Default | Description |
 |---------------------|---------|-------------|
-| `KALLM_EMBEDDING_PROVIDER` | `ollama` | Embedding provider: `ollama` or `openai` |
-| `KALLM_EMBEDDING_MODEL` | `nomic-embed-text` | Embedding model name |
+| `MIMIR_EMBEDDING_PROVIDER` | `ollama` | Embedding provider: `ollama` or `openai` |
+| `MIMIR_EMBEDDING_MODEL` | `nomic-embed-text` | Embedding model name |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
 | `OPENAI_API_KEY` | - | OpenAI API key (auto-switches provider if set) |
 | `OPENAI_BASE_URL` | `https://api.openai.com/v1` | Upstream API URL |
-| `KALLM_PORT` | `8080` | Server port |
-| `KALLM_HOST` | `0.0.0.0` | Server host |
-| `KALLM_SIMILARITY_THRESHOLD` | `0.95` | Minimum similarity for cache hit (0.0-1.0) |
-| `KALLM_CACHE_TTL` | `24h` | Cache entry time-to-live |
-| `KALLM_MAX_CACHE_SIZE` | `10000` | Maximum cache entries |
-| `KALLM_LOG_JSON` | `false` | JSON log format |
+| `MIMIR_PORT` | `8080` | Server port |
+| `MIMIR_HOST` | `0.0.0.0` | Server host |
+| `MIMIR_SIMILARITY_THRESHOLD` | `0.95` | Minimum similarity for cache hit (0.0-1.0) |
+| `MIMIR_CACHE_TTL` | `24h` | Cache entry time-to-live |
+| `MIMIR_MAX_CACHE_SIZE` | `10000` | Maximum cache entries |
+| `MIMIR_LOG_JSON` | `false` | JSON log format |
 
 ### Embedding Models
 
@@ -154,7 +154,7 @@ curl http://localhost:8080/stats
 
 ## Tuning the Similarity Threshold
 
-The `KALLM_SIMILARITY_THRESHOLD` controls how similar a query must be to trigger a cache hit:
+The `MIMIR_SIMILARITY_THRESHOLD` controls how similar a query must be to trigger a cache hit:
 
 | Threshold | Behavior |
 |-----------|----------|

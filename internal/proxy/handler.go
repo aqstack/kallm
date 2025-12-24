@@ -1,4 +1,4 @@
-// Package proxy provides HTTP proxy handling for kallm.
+// Package proxy provides HTTP proxy handling for mimir.
 package proxy
 
 import (
@@ -11,12 +11,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aqstack/kallm/internal/cache"
-	"github.com/aqstack/kallm/internal/config"
-	"github.com/aqstack/kallm/internal/embedding"
-	"github.com/aqstack/kallm/internal/logger"
-	"github.com/aqstack/kallm/internal/reports"
-	"github.com/aqstack/kallm/pkg/api"
+	"github.com/aqstack/mimir/internal/cache"
+	"github.com/aqstack/mimir/internal/config"
+	"github.com/aqstack/mimir/internal/embedding"
+	"github.com/aqstack/mimir/internal/logger"
+	"github.com/aqstack/mimir/internal/reports"
+	"github.com/aqstack/mimir/pkg/api"
 )
 
 // Handler handles proxied requests with semantic caching.
@@ -134,8 +134,8 @@ func (h *Handler) handleChatCompletions(w http.ResponseWriter, r *http.Request) 
 
 		// Return cached response with cache header
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("X-Kallm-Cache", "HIT")
-		w.Header().Set("X-Kallm-Similarity", fmt.Sprintf("%.4f", similarity))
+		w.Header().Set("X-Mimir-Cache", "HIT")
+		w.Header().Set("X-Mimir-Similarity", fmt.Sprintf("%.4f", similarity))
 		json.NewEncoder(w).Encode(entry.Response)
 		return
 	}
@@ -154,7 +154,7 @@ func (h *Handler) handleChatCompletions(w http.ResponseWriter, r *http.Request) 
 	for k, v := range resp.Header {
 		w.Header()[k] = v
 	}
-	w.Header().Set("X-Kallm-Cache", "MISS")
+	w.Header().Set("X-Mimir-Cache", "MISS")
 
 	// If successful, cache the response
 	if resp.StatusCode == http.StatusOK {
@@ -281,7 +281,7 @@ func (h *Handler) writeError(w http.ResponseWriter, message string, status int) 
 	json.NewEncoder(w).Encode(api.ErrorResponse{
 		Error: api.APIError{
 			Message: message,
-			Type:    "kallm_error",
+			Type:    "mimir_error",
 		},
 	})
 }

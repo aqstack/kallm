@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/aqstack/kallm/pkg/api"
+	"github.com/aqstack/mimir/pkg/api"
 )
 
 // Cache defines the interface for semantic caching.

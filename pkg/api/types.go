@@ -1,4 +1,4 @@
-// Package api provides OpenAI-compatible API types for kallm.
+// Package api provides OpenAI-compatible API types for mimir.
 package api
 
 import "time"

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aqstack/kallm/pkg/api"
+	"github.com/aqstack/mimir/pkg/api"
 )
 
 func TestNewOpenAIEmbedder(t *testing.T) {

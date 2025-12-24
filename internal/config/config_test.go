@@ -38,14 +38,14 @@ func TestDefaultConfig(t *testing.T) {
 func TestLoadFromEnv(t *testing.T) {
 	// Save original env
 	origEnv := map[string]string{
-		"KALLM_PORT":                 os.Getenv("KALLM_PORT"),
-		"KALLM_HOST":                 os.Getenv("KALLM_HOST"),
-		"KALLM_EMBEDDING_PROVIDER":   os.Getenv("KALLM_EMBEDDING_PROVIDER"),
-		"KALLM_EMBEDDING_MODEL":      os.Getenv("KALLM_EMBEDDING_MODEL"),
+		"MIMIR_PORT":                 os.Getenv("MIMIR_PORT"),
+		"MIMIR_HOST":                 os.Getenv("MIMIR_HOST"),
+		"MIMIR_EMBEDDING_PROVIDER":   os.Getenv("MIMIR_EMBEDDING_PROVIDER"),
+		"MIMIR_EMBEDDING_MODEL":      os.Getenv("MIMIR_EMBEDDING_MODEL"),
 		"OLLAMA_BASE_URL":            os.Getenv("OLLAMA_BASE_URL"),
-		"KALLM_SIMILARITY_THRESHOLD": os.Getenv("KALLM_SIMILARITY_THRESHOLD"),
-		"KALLM_CACHE_TTL":            os.Getenv("KALLM_CACHE_TTL"),
-		"KALLM_MAX_CACHE_SIZE":       os.Getenv("KALLM_MAX_CACHE_SIZE"),
+		"MIMIR_SIMILARITY_THRESHOLD": os.Getenv("MIMIR_SIMILARITY_THRESHOLD"),
+		"MIMIR_CACHE_TTL":            os.Getenv("MIMIR_CACHE_TTL"),
+		"MIMIR_MAX_CACHE_SIZE":       os.Getenv("MIMIR_MAX_CACHE_SIZE"),
 		"OPENAI_API_KEY":             os.Getenv("OPENAI_API_KEY"),
 	}
 
@@ -66,14 +66,14 @@ func TestLoadFromEnv(t *testing.T) {
 	}
 
 	t.Run("custom values", func(t *testing.T) {
-		os.Setenv("KALLM_PORT", "9090")
-		os.Setenv("KALLM_HOST", "127.0.0.1")
-		os.Setenv("KALLM_EMBEDDING_PROVIDER", "ollama")
-		os.Setenv("KALLM_EMBEDDING_MODEL", "all-minilm")
+		os.Setenv("MIMIR_PORT", "9090")
+		os.Setenv("MIMIR_HOST", "127.0.0.1")
+		os.Setenv("MIMIR_EMBEDDING_PROVIDER", "ollama")
+		os.Setenv("MIMIR_EMBEDDING_MODEL", "all-minilm")
 		os.Setenv("OLLAMA_BASE_URL", "http://ollama:11434")
-		os.Setenv("KALLM_SIMILARITY_THRESHOLD", "0.90")
-		os.Setenv("KALLM_CACHE_TTL", "1h")
-		os.Setenv("KALLM_MAX_CACHE_SIZE", "5000")
+		os.Setenv("MIMIR_SIMILARITY_THRESHOLD", "0.90")
+		os.Setenv("MIMIR_CACHE_TTL", "1h")
+		os.Setenv("MIMIR_MAX_CACHE_SIZE", "5000")
 
 		cfg := LoadFromEnv()
 
@@ -127,7 +127,7 @@ func TestLoadFromEnv(t *testing.T) {
 		}
 
 		os.Setenv("OPENAI_API_KEY", "sk-test-key")
-		os.Setenv("KALLM_EMBEDDING_PROVIDER", "ollama")
+		os.Setenv("MIMIR_EMBEDDING_PROVIDER", "ollama")
 
 		cfg := LoadFromEnv()
 
@@ -171,7 +171,7 @@ func TestValidate(t *testing.T) {
 				MaxCacheSize:        1000,
 			},
 			wantErr: true,
-			errMsg:  "KALLM_EMBEDDING_PROVIDER",
+			errMsg:  "MIMIR_EMBEDDING_PROVIDER",
 		},
 		{
 			name: "openai without api key",
@@ -192,7 +192,7 @@ func TestValidate(t *testing.T) {
 				MaxCacheSize:        1000,
 			},
 			wantErr: true,
-			errMsg:  "KALLM_SIMILARITY_THRESHOLD",
+			errMsg:  "MIMIR_SIMILARITY_THRESHOLD",
 		},
 		{
 			name: "similarity threshold negative",
@@ -202,7 +202,7 @@ func TestValidate(t *testing.T) {
 				MaxCacheSize:        1000,
 			},
 			wantErr: true,
-			errMsg:  "KALLM_SIMILARITY_THRESHOLD",
+			errMsg:  "MIMIR_SIMILARITY_THRESHOLD",
 		},
 		{
 			name: "max cache size zero",
@@ -212,7 +212,7 @@ func TestValidate(t *testing.T) {
 				MaxCacheSize:        0,
 			},
 			wantErr: true,
-			errMsg:  "KALLM_MAX_CACHE_SIZE",
+			errMsg:  "MIMIR_MAX_CACHE_SIZE",
 		},
 	}
 

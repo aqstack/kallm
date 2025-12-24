@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kallm - Cache Performance Dashboard</title>
+    <title>mimir - Cache Performance Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -251,7 +251,7 @@
 <body>
     <div class="header">
         <div>
-            <h1>kallm Cache Performance</h1>
+            <h1>mimir Cache Performance</h1>
             <p>Real-time semantic cache metrics and analytics</p>
         </div>
         <div class="api-config">
@@ -370,12 +370,12 @@
     </div>
 
     <script>
-        let API_URL = localStorage.getItem('kallm_api_url') || 'http://localhost:8080';
+        let API_URL = localStorage.getItem('mimir_api_url') || 'http://localhost:8080';
         document.getElementById('apiUrl').value = API_URL;
 
         function connectToApi() {
             API_URL = document.getElementById('apiUrl').value.replace(/\/$/, '');
-            localStorage.setItem('kallm_api_url', API_URL);
+            localStorage.setItem('mimir_api_url', API_URL);
             fetchData();
         }
 
@@ -499,8 +499,8 @@
                 });
 
                 const latency = Math.round(performance.now() - start);
-                const cacheStatus = resp.headers.get('X-Kallm-Cache') || 'MISS';
-                const similarity = resp.headers.get('X-Kallm-Similarity') || '-';
+                const cacheStatus = resp.headers.get('X-Mimir-Cache') || 'MISS';
+                const similarity = resp.headers.get('X-Mimir-Similarity') || '-';
                 const data = await resp.json();
 
                 const content = data.choices?.[0]?.message?.content || JSON.stringify(data);
@@ -583,7 +583,7 @@
                             messages: [{ role: 'user', content: prompt }]
                         })
                     });
-                    const cacheStatus = resp.headers.get('X-Kallm-Cache');
+                    const cacheStatus = resp.headers.get('X-Mimir-Cache');
                     if (cacheStatus === 'HIT') hits++; else misses++;
                     await resp.json();
                 } catch (e) { misses++; }

@@ -1,7 +1,7 @@
 .PHONY: build run test clean docker docker-run lint fmt help
 
 # Variables
-BINARY_NAME=kallm
+BINARY_NAME=mimir
 VERSION?=$(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 COMMIT?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "none")
 DATE?=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -9,7 +9,7 @@ LDFLAGS=-ldflags "-s -w -X main.version=$(VERSION) -X main.commit=$(COMMIT) -X m
 
 # Default target
 help:
-	@echo "kallm - LLM Semantic Cache"
+	@echo "mimir - LLM Semantic Cache"
 	@echo ""
 	@echo "Usage:"
 	@echo "  make build       Build the binary"
@@ -24,7 +24,7 @@ help:
 # Build
 build:
 	@echo "Building $(BINARY_NAME)..."
-	go build $(LDFLAGS) -o bin/$(BINARY_NAME) ./cmd/kallm
+	go build $(LDFLAGS) -o bin/$(BINARY_NAME) ./cmd/mimir
 
 # Run locally
 run: build

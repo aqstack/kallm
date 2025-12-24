@@ -1,17 +1,17 @@
 version: '3.8'
 
 services:
-  kallm:
+  mimir:
     build: .
     ports:
       - "8080:8080"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - KALLM_PORT=8080
-      - KALLM_SIMILARITY_THRESHOLD=0.95
-      - KALLM_CACHE_TTL=24h
-      - KALLM_MAX_CACHE_SIZE=10000
-      - KALLM_LOG_JSON=false
+      - MIMIR_PORT=8080
+      - MIMIR_SIMILARITY_THRESHOLD=0.95
+      - MIMIR_CACHE_TTL=24h
+      - MIMIR_MAX_CACHE_SIZE=10000
+      - MIMIR_LOG_JSON=false
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]

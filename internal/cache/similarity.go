@@ -1,4 +1,4 @@
-// Package cache provides caching functionality for kallm.
+// Package cache provides caching functionality for mimir.
 package cache
 
 import "math"

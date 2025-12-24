@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/aqstack/kallm/pkg/api"
+	"github.com/aqstack/mimir/pkg/api"
 )
 
 func newTestEntry(embedding []float64, ttl time.Duration) *api.CacheEntry {

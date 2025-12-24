@@ -6,7 +6,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/aqstack/kallm/pkg/api"
+	"github.com/aqstack/mimir/pkg/api"
 )
 
 // MemoryCache implements an in-memory semantic cache.

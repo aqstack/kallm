@@ -1,3 +1,3 @@
-module github.com/aqstack/kallm
+module github.com/aqstack/mimir
 
 go 1.19

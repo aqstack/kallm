@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aqstack/kallm/internal/logger"
+	"github.com/aqstack/mimir/internal/logger"
 )
 
 // LoggingMiddleware logs incoming requests.

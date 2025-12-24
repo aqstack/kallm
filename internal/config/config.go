@@ -1,4 +1,4 @@
-// Package config provides configuration management for kallm.
+// Package config provides configuration management for mimir.
 package config
 
 import (
@@ -58,34 +58,34 @@ func DefaultConfig() *Config {
 func LoadFromEnv() *Config {
 	cfg := DefaultConfig()
 
-	if port := os.Getenv("KALLM_PORT"); port != "" {
+	if port := os.Getenv("MIMIR_PORT"); port != "" {
 		if p, err := strconv.Atoi(port); err == nil {
 			cfg.Port = p
 		}
 	}
 
-	if host := os.Getenv("KALLM_HOST"); host != "" {
+	if host := os.Getenv("MIMIR_HOST"); host != "" {
 		cfg.Host = host
 	}
 
-	if logJSON := os.Getenv("KALLM_LOG_JSON"); logJSON == "true" {
+	if logJSON := os.Getenv("MIMIR_LOG_JSON"); logJSON == "true" {
 		cfg.LogJSON = true
 	}
 
-	if provider := os.Getenv("KALLM_EMBEDDING_PROVIDER"); provider != "" {
+	if provider := os.Getenv("MIMIR_EMBEDDING_PROVIDER"); provider != "" {
 		cfg.EmbeddingProvider = provider
 	}
 
-	if model := os.Getenv("KALLM_EMBEDDING_MODEL"); model != "" {
+	if model := os.Getenv("MIMIR_EMBEDDING_MODEL"); model != "" {
 		cfg.EmbeddingModel = model
 	}
 
 	if apiKey := os.Getenv("OPENAI_API_KEY"); apiKey != "" {
 		cfg.OpenAIAPIKey = apiKey
 		// Auto-switch to OpenAI if API key is provided
-		if os.Getenv("KALLM_EMBEDDING_PROVIDER") == "" {
+		if os.Getenv("MIMIR_EMBEDDING_PROVIDER") == "" {
 			cfg.EmbeddingProvider = "openai"
-			if os.Getenv("KALLM_EMBEDDING_MODEL") == "" {
+			if os.Getenv("MIMIR_EMBEDDING_MODEL") == "" {
 				cfg.EmbeddingModel = "text-embedding-3-small"
 			}
 		}
@@ -99,29 +99,29 @@ func LoadFromEnv() *Config {
 		cfg.OllamaBaseURL = ollamaURL
 	}
 
-	if threshold := os.Getenv("KALLM_SIMILARITY_THRESHOLD"); threshold != "" {
+	if threshold := os.Getenv("MIMIR_SIMILARITY_THRESHOLD"); threshold != "" {
 		if t, err := strconv.ParseFloat(threshold, 64); err == nil {
 			cfg.SimilarityThreshold = t
 		}
 	}
 
-	if ttl := os.Getenv("KALLM_CACHE_TTL"); ttl != "" {
+	if ttl := os.Getenv("MIMIR_CACHE_TTL"); ttl != "" {
 		if d, err := time.ParseDuration(ttl); err == nil {
 			cfg.CacheTTL = d
 		}
 	}
 
-	if maxSize := os.Getenv("KALLM_MAX_CACHE_SIZE"); maxSize != "" {
+	if maxSize := os.Getenv("MIMIR_MAX_CACHE_SIZE"); maxSize != "" {
 		if s, err := strconv.Atoi(maxSize); err == nil {
 			cfg.MaxCacheSize = s
 		}
 	}
 
-	if metricsEnabled := os.Getenv("KALLM_METRICS_ENABLED"); metricsEnabled == "false" {
+	if metricsEnabled := os.Getenv("MIMIR_METRICS_ENABLED"); metricsEnabled == "false" {
 		cfg.MetricsEnabled = false
 	}
 
-	if metricsPort := os.Getenv("KALLM_METRICS_PORT"); metricsPort != "" {
+	if metricsPort := os.Getenv("MIMIR_METRICS_PORT"); metricsPort != "" {
 		if p, err := strconv.Atoi(metricsPort); err == nil {
 			cfg.MetricsPort = p
 		}
@@ -133,16 +133,16 @@ func LoadFromEnv() *Config {
 // Validate validates the configuration.
 func (c *Config) Validate() error {
 	if c.EmbeddingProvider != "openai" && c.EmbeddingProvider != "ollama" {
-		return &ConfigError{Field: "KALLM_EMBEDDING_PROVIDER", Message: "must be 'openai' or 'ollama'"}
+		return &ConfigError{Field: "MIMIR_EMBEDDING_PROVIDER", Message: "must be 'openai' or 'ollama'"}
 	}
 	if c.EmbeddingProvider == "openai" && c.OpenAIAPIKey == "" {
 		return &ConfigError{Field: "OPENAI_API_KEY", Message: "required when using OpenAI provider"}
 	}
 	if c.SimilarityThreshold < 0 || c.SimilarityThreshold > 1 {
-		return &ConfigError{Field: "KALLM_SIMILARITY_THRESHOLD", Message: "must be between 0 and 1"}
+		return &ConfigError{Field: "MIMIR_SIMILARITY_THRESHOLD", Message: "must be between 0 and 1"}
 	}
 	if c.MaxCacheSize < 1 {
-		return &ConfigError{Field: "KALLM_MAX_CACHE_SIZE", Message: "must be at least 1"}
+		return &ConfigError{Field: "MIMIR_MAX_CACHE_SIZE", Message: "must be at least 1"}
 	}
 	return nil
 }

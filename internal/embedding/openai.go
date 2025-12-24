@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aqstack/kallm/pkg/api"
+	"github.com/aqstack/mimir/pkg/api"
 )
 
 // OpenAIEmbedder generates embeddings using the OpenAI API.

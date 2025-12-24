@@ -1,4 +1,4 @@
-// Package reports provides performance reporting and visualization for kallm.
+// Package reports provides performance reporting and visualization for mimir.
 package reports
 
 import (

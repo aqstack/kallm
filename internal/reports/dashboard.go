@@ -7,7 +7,7 @@ func DashboardHTML() string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kallm - Cache Performance Dashboard</title>
+    <title>mimir - Cache Performance Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -216,7 +216,7 @@ func DashboardHTML() string {
 </head>
 <body>
     <div class="header">
-        <h1>kallm Cache Performance</h1>
+        <h1>mimir Cache Performance</h1>
         <p>Real-time semantic cache metrics and analytics</p>
     </div>
 
@@ -456,8 +456,8 @@ func DashboardHTML() string {
                 });
 
                 const latency = Math.round(performance.now() - start);
-                const cacheStatus = resp.headers.get('X-Kallm-Cache') || 'MISS';
-                const similarity = resp.headers.get('X-Kallm-Similarity') || '-';
+                const cacheStatus = resp.headers.get('X-Mimir-Cache') || 'MISS';
+                const similarity = resp.headers.get('X-Mimir-Similarity') || '-';
                 const data = await resp.json();
 
                 const content = data.choices?.[0]?.message?.content || JSON.stringify(data);
@@ -578,7 +578,7 @@ ${content}` + "`" + `;
                             messages: [{ role: 'user', content: prompt }]
                         })
                     });
-                    const cacheStatus = resp.headers.get('X-Kallm-Cache');
+                    const cacheStatus = resp.headers.get('X-Mimir-Cache');
                     if (cacheStatus === 'HIT') hits++; else misses++;
                     await resp.json();
                 } catch (e) {

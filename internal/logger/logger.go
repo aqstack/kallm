@@ -1,4 +1,4 @@
-// Package logger provides structured logging for kallm.
+// Package logger provides structured logging for mimir.
 package logger
 
 import (
