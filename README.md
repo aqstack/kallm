@@ -7,6 +7,7 @@ kallm is a drop-in proxy that caches LLM API responses using semantic similarity
 ## Features
 
 - **Semantic Caching** - Cache hits for semantically similar prompts, not just exact matches
+- **Free Local Embeddings** - Use Ollama for embeddings with zero API costs
 - **OpenAI-Compatible** - Drop-in replacement proxy for OpenAI API
 - **Configurable Threshold** - Tune similarity sensitivity (0.0-1.0)
 - **TTL Support** - Time-based cache expiration
@@ -34,43 +35,45 @@ kallm is a drop-in proxy that caches LLM API responses using semantic similarity
 
 ## Quick Start
 
+### Option 1: Local Embeddings with Ollama (Free)
+
+```bash
+# Install Ollama (if not already installed)
+brew install ollama  # macOS
+# or: curl -fsSL https://ollama.com/install.sh | sh  # Linux
+
+# Start Ollama and pull embedding model
+ollama serve &
+ollama pull nomic-embed-text
+
+# Clone and run kallm
+git clone https://github.com/aqstack/kallm.git
+cd kallm
+make build
+./bin/kallm
+```
+
+### Option 2: OpenAI Embeddings
+
+```bash
+# Clone and build
+git clone https://github.com/aqstack/kallm.git
+cd kallm
+make build
+
+# Run with OpenAI
+export OPENAI_API_KEY=sk-...
+./bin/kallm
+```
+
 ### Using Docker
 
 ```bash
-# Set your OpenAI API key
-export OPENAI_API_KEY=sk-...
+# With Ollama (requires Ollama running on host)
+docker run -p 8080:8080 -e OLLAMA_BASE_URL=http://host.docker.internal:11434 ghcr.io/aqstack/kallm:latest
 
-# Run kallm
+# With OpenAI
 docker run -p 8080:8080 -e OPENAI_API_KEY=$OPENAI_API_KEY ghcr.io/aqstack/kallm:latest
-```
-
-### Using Docker Compose
-
-```bash
-# Clone the repo
-git clone https://github.com/aqstack/kallm.git
-cd kallm
-
-# Set your API key
-export OPENAI_API_KEY=sk-...
-
-# Run
-docker-compose up
-```
-
-### Building from Source
-
-```bash
-# Clone
-git clone https://github.com/aqstack/kallm.git
-cd kallm
-
-# Build
-make build
-
-# Run
-export OPENAI_API_KEY=sk-...
-./bin/kallm
 ```
 
 ## Usage
@@ -100,15 +103,29 @@ response = client.chat.completions.create(
 
 | Environment Variable | Default | Description |
 |---------------------|---------|-------------|
-| `OPENAI_API_KEY` | (required) | OpenAI API key |
+| `KALLM_EMBEDDING_PROVIDER` | `ollama` | Embedding provider: `ollama` or `openai` |
+| `KALLM_EMBEDDING_MODEL` | `nomic-embed-text` | Embedding model name |
+| `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama server URL |
+| `OPENAI_API_KEY` | - | OpenAI API key (auto-switches provider if set) |
 | `OPENAI_BASE_URL` | `https://api.openai.com/v1` | Upstream API URL |
 | `KALLM_PORT` | `8080` | Server port |
 | `KALLM_HOST` | `0.0.0.0` | Server host |
 | `KALLM_SIMILARITY_THRESHOLD` | `0.95` | Minimum similarity for cache hit (0.0-1.0) |
 | `KALLM_CACHE_TTL` | `24h` | Cache entry time-to-live |
 | `KALLM_MAX_CACHE_SIZE` | `10000` | Maximum cache entries |
-| `KALLM_EMBEDDING_MODEL` | `text-embedding-3-small` | Embedding model |
 | `KALLM_LOG_JSON` | `false` | JSON log format |
+
+### Embedding Models
+
+**Ollama (free, local):**
+- `nomic-embed-text` (768 dims, recommended)
+- `mxbai-embed-large` (1024 dims)
+- `all-minilm` (384 dims, fastest)
+
+**OpenAI (paid):**
+- `text-embedding-3-small` (1536 dims, recommended)
+- `text-embedding-3-large` (3072 dims)
+- `text-embedding-ada-002` (1536 dims)
 
 ## API Endpoints
 
@@ -148,6 +165,7 @@ The `KALLM_SIMILARITY_THRESHOLD` controls how similar a query must be to trigger
 
 ## Roadmap
 
+- [x] Local embeddings with Ollama
 - [ ] Redis/Qdrant backend for persistence
 - [ ] Kubernetes Helm chart
 - [ ] Prometheus metrics
