@@ -9,7 +9,7 @@ LDFLAGS=-ldflags "-s -w -X main.version=$(VERSION) -X main.commit=$(COMMIT) -X m
 
 # Default target
 help:
-	@echo "kallm - Kubernetes-native LLM Semantic Cache"
+	@echo "kallm - LLM Semantic Cache"
 	@echo ""
 	@echo "Usage:"
 	@echo "  make build       Build the binary"

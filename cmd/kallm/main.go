@@ -1,4 +1,4 @@
-// kallm - Kubernetes-native LLM Semantic Cache
+// kallm - LLM Semantic Cache
 //
 // A drop-in proxy that caches LLM API responses using semantic similarity,
 // reducing costs and latency for repeated or similar queries.

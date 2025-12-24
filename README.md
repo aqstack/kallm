@@ -1,6 +1,6 @@
 # kallm
 
-**Kubernetes-native LLM Semantic Cache**
+**LLM Semantic Cache**
 
 kallm is a drop-in proxy that caches LLM API responses using semantic similarity, reducing costs and latency for repeated or similar queries.
 
@@ -12,7 +12,7 @@ kallm is a drop-in proxy that caches LLM API responses using semantic similarity
 - **Configurable Threshold** - Tune similarity sensitivity (0.0-1.0)
 - **TTL Support** - Time-based cache expiration
 - **Zero Dependencies** - Single binary, no external database required
-- **Kubernetes-Ready** - Designed for cloud-native deployments
+- **Docker Ready** - Simple containerized deployment
 
 ## How It Works
 
@@ -167,10 +167,7 @@ The `KALLM_SIMILARITY_THRESHOLD` controls how similar a query must be to trigger
 
 - [x] Local embeddings with Ollama
 - [ ] Redis/Qdrant backend for persistence
-- [ ] Kubernetes Helm chart
 - [ ] Prometheus metrics
-- [ ] CRD for cache configuration
-- [ ] Namespace-based isolation
 - [ ] Cache warming
 - [ ] Support for Anthropic, Gemini APIs
 
