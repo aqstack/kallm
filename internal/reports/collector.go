@@ -15,11 +15,12 @@ type DataPoint struct {
 
 // RequestMetric represents metrics for a single request.
 type RequestMetric struct {
-	Timestamp  time.Time `json:"timestamp"`
-	CacheHit   bool      `json:"cache_hit"`
-	Similarity float64   `json:"similarity"`
-	LatencyMs  int64     `json:"latency_ms"`
-	TokensSaved int      `json:"tokens_saved"`
+	Timestamp   time.Time `json:"timestamp"`
+	CacheHit    bool      `json:"cache_hit"`
+	Similarity  float64   `json:"similarity"`
+	LatencyMs   int64     `json:"latency_ms"`
+	TokensSaved int       `json:"tokens_saved"`
+	Prompt      string    `json:"prompt,omitempty"`
 }
 
 // Collector collects and aggregates performance metrics over time.
@@ -69,7 +70,7 @@ func NewCollector() *Collector {
 }
 
 // RecordRequest records metrics for a single request.
-func (c *Collector) RecordRequest(cacheHit bool, similarity float64, latencyMs int64, tokensSaved int) {
+func (c *Collector) RecordRequest(cacheHit bool, similarity float64, latencyMs int64, tokensSaved int, prompt string) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -80,6 +81,11 @@ func (c *Collector) RecordRequest(cacheHit bool, similarity float64, latencyMs i
 		c.rotateWindow(now)
 	}
 
+	// Truncate prompt for storage
+	if len(prompt) > 100 {
+		prompt = prompt[:97] + "..."
+	}
+
 	// Record raw metric
 	metric := RequestMetric{
 		Timestamp:   now,
@@ -87,6 +93,7 @@ func (c *Collector) RecordRequest(cacheHit bool, similarity float64, latencyMs i
 		Similarity:  similarity,
 		LatencyMs:   latencyMs,
 		TokensSaved: tokensSaved,
+		Prompt:      prompt,
 	}
 
 	if len(c.requests) < c.maxRequests {

@@ -125,7 +125,7 @@ func (h *Handler) handleChatCompletions(w http.ResponseWriter, r *http.Request) 
 
 		// Record metrics - estimate tokens saved based on response
 		tokensSaved := entry.Response.Usage.TotalTokens
-		h.collector.RecordRequest(true, similarity, latencyMs, tokensSaved)
+		h.collector.RecordRequest(true, similarity, latencyMs, tokensSaved, cacheKey)
 
 		// Return cached response with cache header
 		w.Header().Set("Content-Type", "application/json")
@@ -178,7 +178,7 @@ func (h *Handler) handleChatCompletions(w http.ResponseWriter, r *http.Request) 
 	latencyMs := time.Since(startTime).Milliseconds()
 
 	// Record cache miss metric
-	h.collector.RecordRequest(false, 0, latencyMs, 0)
+	h.collector.RecordRequest(false, 0, latencyMs, 0, cacheKey)
 
 	h.logger.Info("upstream request completed",
 		"status", resp.StatusCode,

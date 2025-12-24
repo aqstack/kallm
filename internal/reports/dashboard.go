@@ -92,6 +92,92 @@ func DashboardHTML() string {
             font-size: 0.75rem;
             margin-top: 1rem;
         }
+
+        .test-panel { min-height: 200px; }
+        .test-form { display: flex; flex-direction: column; gap: 0.75rem; }
+        .test-form textarea {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            color: #e2e8f0;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+        }
+        .test-form textarea:focus { outline: none; border-color: #60a5fa; }
+        .test-controls { display: flex; gap: 0.5rem; }
+        .test-controls select, .test-controls button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        .test-controls select {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            flex: 1;
+        }
+        .test-controls button, .traffic-presets button {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .test-controls button:hover, .traffic-presets button:hover { background: #2563eb; }
+        .test-controls button:disabled, .traffic-presets button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+        .test-result {
+            background: #0f172a;
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            font-size: 0.8rem;
+            font-family: monospace;
+            max-height: 120px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .test-result.hit { border-left: 3px solid #4ade80; }
+        .test-result.miss { border-left: 3px solid #f87171; }
+        .test-result.error { border-left: 3px solid #facc15; color: #facc15; }
+
+        .traffic-options { display: flex; gap: 1rem; }
+        .traffic-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        .traffic-options input {
+            width: 70px;
+            padding: 0.375rem;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.25rem;
+            color: #e2e8f0;
+            font-size: 0.8rem;
+        }
+        .traffic-presets { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .traffic-presets button { padding: 0.375rem 0.75rem; font-size: 0.75rem; }
+        .progress-bar {
+            height: 4px;
+            background: #334155;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-bar > div {
+            height: 100%;
+            background: #4ade80;
+            width: 0%;
+            transition: width 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -155,6 +241,40 @@ func DashboardHTML() string {
             </div>
         </div>
 
+        <div class="charts-grid">
+            <div class="chart-card test-panel">
+                <h3>Test Prompt</h3>
+                <div class="test-form">
+                    <textarea id="testPrompt" placeholder="Enter a prompt to test caching...">What is 2+2?</textarea>
+                    <div class="test-controls">
+                        <select id="testModel">
+                            <option value="llama3.2:1b">llama3.2:1b</option>
+                            <option value="gpt-4">gpt-4</option>
+                            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                        </select>
+                        <button id="sendBtn" onclick="sendTestPrompt()">Send</button>
+                    </div>
+                    <div id="testResult" class="test-result"></div>
+                </div>
+            </div>
+            <div class="chart-card test-panel">
+                <h3>Traffic Generator</h3>
+                <div class="test-form">
+                    <div class="traffic-options">
+                        <label>Requests: <input type="number" id="trafficCount" value="10" min="1" max="100"></label>
+                        <label>Delay (ms): <input type="number" id="trafficDelay" value="100" min="0" max="5000"></label>
+                    </div>
+                    <div class="traffic-presets">
+                        <button onclick="generateTraffic('identical')">Identical Queries</button>
+                        <button onclick="generateTraffic('similar')">Similar Queries</button>
+                        <button onclick="generateTraffic('random')">Random Queries</button>
+                    </div>
+                    <div id="trafficStatus" class="test-result"></div>
+                    <div class="progress-bar"><div id="trafficProgress"></div></div>
+                </div>
+            </div>
+        </div>
+
         <div class="table-card">
             <h3>Recent Requests</h3>
             <table>
@@ -164,6 +284,7 @@ func DashboardHTML() string {
                         <th>Status</th>
                         <th>Similarity</th>
                         <th>Latency</th>
+                        <th>Prompt</th>
                     </tr>
                 </thead>
                 <tbody id="requestsTable"></tbody>
@@ -261,11 +382,13 @@ func DashboardHTML() string {
                 if (data.recent_requests) {
                     data.recent_requests.slice(0, 20).forEach(req => {
                         const tr = document.createElement('tr');
+                        const prompt = req.prompt ? req.prompt.substring(0, 50) + (req.prompt.length > 50 ? '...' : '') : '-';
                         tr.innerHTML = ` + "`" + `
                             <td>${formatTime(req.timestamp)}</td>
                             <td><span class="badge ${req.cache_hit ? 'hit' : 'miss'}">${req.cache_hit ? 'HIT' : 'MISS'}</span></td>
                             <td>${req.cache_hit ? (req.similarity * 100).toFixed(2) + '%' : '-'}</td>
                             <td>${req.latency_ms}ms</td>
+                            <td title="${req.prompt || ''}">${prompt}</td>
                         ` + "`" + `;
                         tbody.appendChild(tr);
                     });
@@ -277,6 +400,127 @@ func DashboardHTML() string {
 
         fetchData();
         setInterval(fetchData, 5000);
+
+        // Test prompt functionality
+        async function sendTestPrompt() {
+            const btn = document.getElementById('sendBtn');
+            const result = document.getElementById('testResult');
+            const prompt = document.getElementById('testPrompt').value;
+            const model = document.getElementById('testModel').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            result.className = 'test-result';
+            result.textContent = 'Sending request...';
+
+            try {
+                const start = performance.now();
+                const resp = await fetch('/v1/chat/completions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: model,
+                        messages: [{ role: 'user', content: prompt }]
+                    })
+                });
+
+                const latency = Math.round(performance.now() - start);
+                const cacheStatus = resp.headers.get('X-Kallm-Cache') || 'MISS';
+                const similarity = resp.headers.get('X-Kallm-Similarity') || '-';
+                const data = await resp.json();
+
+                const content = data.choices?.[0]?.message?.content || JSON.stringify(data);
+                result.className = 'test-result ' + cacheStatus.toLowerCase();
+                result.textContent = ` + "`" + `[${cacheStatus}] ${latency}ms ${cacheStatus === 'HIT' ? '(sim: ' + similarity + ')' : ''}
+${content}` + "`" + `;
+
+                fetchData(); // Refresh stats
+            } catch (e) {
+                result.className = 'test-result error';
+                result.textContent = 'Error: ' + e.message;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Send';
+            }
+        }
+
+        // Traffic generator
+        const trafficPrompts = {
+            identical: ['What is 2+2?'],
+            similar: [
+                'What is 2+2?',
+                'What is two plus two?',
+                'Calculate 2 + 2',
+                'What does 2+2 equal?',
+                'Tell me the sum of 2 and 2'
+            ],
+            random: [
+                'What is the capital of France?',
+                'Explain quantum computing',
+                'Write a haiku about coding',
+                'What is machine learning?',
+                'How does the internet work?',
+                'What is 2+2?',
+                'Describe the solar system',
+                'What is artificial intelligence?',
+                'How do computers work?',
+                'Explain blockchain'
+            ]
+        };
+
+        let trafficRunning = false;
+
+        async function generateTraffic(type) {
+            if (trafficRunning) return;
+            trafficRunning = true;
+
+            const count = parseInt(document.getElementById('trafficCount').value) || 10;
+            const delay = parseInt(document.getElementById('trafficDelay').value) || 100;
+            const status = document.getElementById('trafficStatus');
+            const progress = document.getElementById('trafficProgress');
+            const buttons = document.querySelectorAll('.traffic-presets button');
+
+            buttons.forEach(b => b.disabled = true);
+            const prompts = trafficPrompts[type];
+            let hits = 0, misses = 0;
+
+            for (let i = 0; i < count; i++) {
+                const prompt = prompts[i % prompts.length];
+                status.textContent = ` + "`" + `Sending ${i + 1}/${count}: "${prompt.substring(0, 30)}..."` + "`" + `;
+                progress.style.width = ((i + 1) / count * 100) + '%';
+
+                try {
+                    const resp = await fetch('/v1/chat/completions', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            model: document.getElementById('testModel').value,
+                            messages: [{ role: 'user', content: prompt }]
+                        })
+                    });
+                    const cacheStatus = resp.headers.get('X-Kallm-Cache');
+                    if (cacheStatus === 'HIT') hits++; else misses++;
+                    await resp.json();
+                } catch (e) {
+                    misses++;
+                }
+
+                if (delay > 0 && i < count - 1) {
+                    await new Promise(r => setTimeout(r, delay));
+                }
+            }
+
+            status.className = 'test-result';
+            status.textContent = ` + "`" + `Complete! ${count} requests: ${hits} hits, ${misses} misses (${(hits/count*100).toFixed(1)}% hit rate)` + "`" + `;
+            buttons.forEach(b => b.disabled = false);
+            trafficRunning = false;
+            fetchData();
+        }
+
+        // Allow Ctrl+Enter to send
+        document.getElementById('testPrompt').addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') sendTestPrompt();
+        });
     </script>
 </body>
 </html>`

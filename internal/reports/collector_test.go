@@ -20,7 +20,7 @@ func TestRecordRequest(t *testing.T) {
 	c := NewCollector()
 
 	// Record a cache hit
-	c.RecordRequest(true, 0.98, 5, 500)
+	c.RecordRequest(true, 0.98, 5, 500, "What is 2+2?")
 
 	if c.totalRequests != 1 {
 		t.Errorf("expected totalRequests=1, got %d", c.totalRequests)
@@ -33,7 +33,7 @@ func TestRecordRequest(t *testing.T) {
 	}
 
 	// Record a cache miss
-	c.RecordRequest(false, 0, 100, 0)
+	c.RecordRequest(false, 0, 100, 0, "Different prompt")
 
 	if c.totalRequests != 2 {
 		t.Errorf("expected totalRequests=2, got %d", c.totalRequests)
@@ -47,10 +47,10 @@ func TestGetReport(t *testing.T) {
 	c := NewCollector()
 
 	// Record some requests
-	c.RecordRequest(true, 0.99, 5, 500)
-	c.RecordRequest(true, 0.97, 10, 600)
-	c.RecordRequest(false, 0, 150, 0)
-	c.RecordRequest(false, 0, 200, 0)
+	c.RecordRequest(true, 0.99, 5, 500, "prompt1")
+	c.RecordRequest(true, 0.97, 10, 600, "prompt2")
+	c.RecordRequest(false, 0, 150, 0, "prompt3")
+	c.RecordRequest(false, 0, 200, 0, "prompt4")
 
 	report := c.GetReport()
 
@@ -79,11 +79,11 @@ func TestLatencyDistribution(t *testing.T) {
 	c := NewCollector()
 
 	// Record requests in different latency buckets
-	c.RecordRequest(false, 0, 5, 0)    // 0-10ms
-	c.RecordRequest(false, 0, 25, 0)   // 10-50ms
-	c.RecordRequest(false, 0, 75, 0)   // 50-100ms
-	c.RecordRequest(false, 0, 200, 0)  // 100-500ms
-	c.RecordRequest(false, 0, 1000, 0) // 500ms+
+	c.RecordRequest(false, 0, 5, 0, "p1")    // 0-10ms
+	c.RecordRequest(false, 0, 25, 0, "p2")   // 10-50ms
+	c.RecordRequest(false, 0, 75, 0, "p3")   // 50-100ms
+	c.RecordRequest(false, 0, 200, 0, "p4")  // 100-500ms
+	c.RecordRequest(false, 0, 1000, 0, "p5") // 500ms+
 
 	report := c.GetReport()
 
@@ -106,12 +106,12 @@ func TestSimilarityDistribution(t *testing.T) {
 	c := NewCollector()
 
 	// Record cache hits with different similarities
-	c.RecordRequest(true, 1.0, 5, 100)   // 0.99-1.0
-	c.RecordRequest(true, 0.98, 5, 100)  // 0.97-0.99
-	c.RecordRequest(true, 0.96, 5, 100)  // 0.95-0.97
-	c.RecordRequest(true, 0.92, 5, 100)  // 0.90-0.95
-	c.RecordRequest(true, 0.85, 5, 100)  // <0.90
-	c.RecordRequest(false, 0, 100, 0)    // miss - should not be counted
+	c.RecordRequest(true, 1.0, 5, 100, "p1")   // 0.99-1.0
+	c.RecordRequest(true, 0.98, 5, 100, "p2")  // 0.97-0.99
+	c.RecordRequest(true, 0.96, 5, 100, "p3")  // 0.95-0.97
+	c.RecordRequest(true, 0.92, 5, 100, "p4")  // 0.90-0.95
+	c.RecordRequest(true, 0.85, 5, 100, "p5")  // <0.90
+	c.RecordRequest(false, 0, 100, 0, "p6")    // miss - should not be counted
 
 	report := c.GetReport()
 
@@ -135,7 +135,7 @@ func TestRecentRequests(t *testing.T) {
 
 	// Record 60 requests
 	for i := 0; i < 60; i++ {
-		c.RecordRequest(i%2 == 0, 0.95, int64(i), 100)
+		c.RecordRequest(i%2 == 0, 0.95, int64(i), 100, "prompt")
 	}
 
 	report := c.GetReport()
