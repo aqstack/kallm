@@ -182,7 +182,7 @@ func DashboardHTML() string {
             transition: width 0.3s;
         }
 
-        .logs-panel { margin-bottom: 0; }
+        .logs-panel { margin-bottom: 2rem; }
         .logs-container {
             background: #0f172a;
             border-radius: 0.5rem;
